@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,8 +38,8 @@ public class BoardService {
 
 
     //게시물 목록
-    public List<Board> list() {
-        return boardRepository.findAll();
+    public Page<Board> list(Pageable pageable) {
+        return boardRepository.findAll(pageable);
     }
 
 
@@ -52,4 +54,10 @@ public class BoardService {
         boardRepository.delete(board);
         //boardRepository.deleteById(id);
     }
+
+    public Page<Board> searchKeyword(String searchKeyword, Pageable pageable) {
+        return boardRepository.findByTitleContaining(searchKeyword, pageable);
+    }
+
+
 }
